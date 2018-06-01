@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 #include <curses.h>
 
 // networking
@@ -18,6 +19,9 @@
 
 /* constants */
 #define PORT 6174 // 61 - a in hex, 74 - t in hex (see boat in hex)
+#define LO_PORT 1025
+#define HI_PORT 65535
+#define IP "127.0.0.1"
 #define ENTER_KEY 10
 #define BACKSPACE_KEY 7
 
