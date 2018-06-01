@@ -133,6 +133,10 @@ void host_game()
 	address.sin_port = htons(port);
 	address.sin_addr.s_addr = INADDR_ANY;
 
+    // enables port re-use
+	int value = 1;
+	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &value, sizeof(value));
+
     // check to see if port is in valid range, then attempt to bind the socket to the port
     if((port < LO_PORT || port > HI_PORT) || (bind(sock, (struct sockaddr *)&address, sizeof(address)) == -1))
 	{
@@ -155,6 +159,16 @@ void host_game()
 
     printw("Connected!\n");
     printw("\nPress ENTER to start the game....");
+    getch();
+    clear();
+    WINDOW *game1 = newwin(10, 30, 0, 0);
+    WINDOW *game2 = newwin(10, 30, 11, 0);
+    box(game1, 0, 0);
+    box(game2, 0, 0);
+    refresh();
+    wrefresh(game1);
+    wrefresh(game2);
+
     getch();
 }
 
@@ -255,7 +269,8 @@ void join_game()
         printw("Connected!\n");
         printw("\nAwaiting host to start the game....");
     } else {
-        printw("Error! Could not connec to host!");
+        printw("Error! Could not connect to host!\n");
+        printw("\nPress ENTER to continue....");
         getch();
     }
 }
