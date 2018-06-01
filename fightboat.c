@@ -162,22 +162,11 @@ void host_game()
     getch();
     clear();
 
-    char game1[12][512];
-    char game2[12][512];
-    sprintf(game1[0], "+-----------------------------------------------------------+");
-    sprintf(game1[1], "|     |     |     |     |     |     |     |     |     |     |");
-    sprintf(game1[2], "|     |     |     |     |     |     |     |     |     |     |");
-    sprintf(game1[3], "|     |     |     |     |     |     |     |     |     |     |");
-    sprintf(game1[4], "|     |     |     |     |     |     |     |     |     |     |");
-    sprintf(game1[5], "|     |     |     |     |     |     |     |     |     |     |");
-    sprintf(game1[6], "|     |     |     |     |     |     |     |     |     |     |");
-    sprintf(game1[7], "|     |     |     |     |     |     |     |     |     |     |");
-    sprintf(game1[8], "|     |     |     |     |     |     |     |     |     |     |");
-    sprintf(game1[9], "|     |     |     |     |     |     |     |     |     |     |");
-    sprintf(game1[10], "|     |     |     |     |     |     |     |     |     |     |");
-    sprintf(game1[11], "+-----------------------------------------------------------+");
-
-    print_board(game1);
+    char hits[12][512];
+    char ships[12][512];
+    make_board(hits);
+    make_board(ships);
+    print_boards(hits, ships);
 
     getyx(stdscr, py, px);
     while (1) {
@@ -197,16 +186,6 @@ void host_game()
     }
 
     getch();
-}
-
-void print_board(char gameboard[12][512])
-{
-    clear();
-    int i;
-    for (i = 0; i < 12; i++) {
-        printw("%s\n", gameboard[i]);
-    }
-    refresh();
 }
 
 void join_game()
@@ -310,4 +289,31 @@ void join_game()
         printw("\nPress ENTER to continue....");
         getch();
     }
+}
+
+void make_board(char gameboard[12][512])
+{
+    sprintf(gameboard[0], "+-----------------------------------------------------------+");
+    int i;
+    for (i = 1; i < 11; i++) {
+        sprintf(gameboard[i], "|     |     |     |     |     |     |     |     |     |     |");
+    }
+    sprintf(gameboard[11], "+-----------------------------------------------------------+");
+}
+
+void print_boards(char hits[12][512], char ships[12][512])
+{
+    clear();
+    int i;
+    printw("\tHits\n");
+    printw("     1     2     3     4     5     6     7     8     9     10\n");
+    for (i = 0; i < 12; i++) {
+        printw("%c %s\n", (i >= 1 && i <= 10) ? 'A' + i - 1 : ' ', hits[i]);
+    }
+    printw("\tShips\n");
+    printw("     1     2     3     4     5     6     7     8     9     10\n");
+    for (i = 0; i < 12; i++) {
+        printw("%c %s\n", (i >= 1 && i <= 10) ? 'A' + i - 1 : ' ', ships[i]);
+    }
+    refresh();
 }

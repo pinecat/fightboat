@@ -32,7 +32,9 @@ void print_logo();
 void game_setup();
 
 void host_game();
-void print_board(char gamebaord[12][512]);
 void join_game();
+
+void make_board(char gameboard[12][512]);
+void print_boards(char hits[12][512], char ships[12][512]);
 
 #endif
