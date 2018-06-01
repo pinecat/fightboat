@@ -32,6 +32,7 @@ void print_logo();
 void game_setup();
 
 void host_game();
+void print_board(char gamebaord[12][512]);
 void join_game();
 
 #endif

@@ -94,7 +94,7 @@ void host_game()
     getyx(stdscr, py, px);
     char ch_port[64] = "6174";
     int i = 0;
-    char ch;
+    int ch;
     while (1) {
         if ((ch = getch()) != ENTER_KEY) {
             int y, x;
@@ -161,15 +161,52 @@ void host_game()
     printw("\nPress ENTER to start the game....");
     getch();
     clear();
-    WINDOW *game1 = newwin(10, 30, 0, 0);
-    WINDOW *game2 = newwin(10, 30, 11, 0);
-    box(game1, 0, 0);
-    box(game2, 0, 0);
-    refresh();
-    wrefresh(game1);
-    wrefresh(game2);
+
+    char game1[12][512];
+    char game2[12][512];
+    sprintf(game1[0], "+-----------------------------------------------------------+");
+    sprintf(game1[1], "|     |     |     |     |     |     |     |     |     |     |");
+    sprintf(game1[2], "|     |     |     |     |     |     |     |     |     |     |");
+    sprintf(game1[3], "|     |     |     |     |     |     |     |     |     |     |");
+    sprintf(game1[4], "|     |     |     |     |     |     |     |     |     |     |");
+    sprintf(game1[5], "|     |     |     |     |     |     |     |     |     |     |");
+    sprintf(game1[6], "|     |     |     |     |     |     |     |     |     |     |");
+    sprintf(game1[7], "|     |     |     |     |     |     |     |     |     |     |");
+    sprintf(game1[8], "|     |     |     |     |     |     |     |     |     |     |");
+    sprintf(game1[9], "|     |     |     |     |     |     |     |     |     |     |");
+    sprintf(game1[10], "|     |     |     |     |     |     |     |     |     |     |");
+    sprintf(game1[11], "+-----------------------------------------------------------+");
+
+    print_board(game1);
+
+    getyx(stdscr, py, px);
+    while (1) {
+        ch = getch();
+        switch(ch) {
+            case KEY_UP: py--; break;
+            case KEY_DOWN: py++; break;
+            case KEY_LEFT: px--; break;
+            case KEY_RIGHT: px++; break;
+            default: break;
+        }
+        if (ch == ENTER_KEY) {
+            break;
+        }
+        move(py, px);
+        refresh();
+    }
 
     getch();
+}
+
+void print_board(char gameboard[12][512])
+{
+    clear();
+    int i;
+    for (i = 0; i < 12; i++) {
+        printw("%s\n", gameboard[i]);
+    }
+    refresh();
 }
 
 void join_game()
