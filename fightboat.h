@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <ctype.h>
 #include <curses.h>
 
 // networking
@@ -36,5 +37,8 @@ void join_game();
 
 void make_board(char gameboard[12][512]);
 void print_boards(char hits[12][512], char ships[12][512]);
+int placer(int y, int x, char board[12][512]);
+void print_place_boats();
+void play(int sock);
 
 #endif

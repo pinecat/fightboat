@@ -1,0 +1,18 @@
+print_boards(hits, ships);
+
+getyx(stdscr, py, px);
+while (1) {
+    ch = getch();
+    switch(ch) {
+        case KEY_UP: py--; break;
+        case KEY_DOWN: py++; break;
+        case KEY_LEFT: px--; break;
+        case KEY_RIGHT: px++; break;
+        default: break;
+    }
+    if (ch == ENTER_KEY) {
+        break;
+    }
+    move(py, px);
+    refresh();
+}

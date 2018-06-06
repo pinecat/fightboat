@@ -162,28 +162,8 @@ void host_game()
     getch();
     clear();
 
-    char hits[12][512];
-    char ships[12][512];
-    make_board(hits);
-    make_board(ships);
-    print_boards(hits, ships);
-
-    getyx(stdscr, py, px);
-    while (1) {
-        ch = getch();
-        switch(ch) {
-            case KEY_UP: py--; break;
-            case KEY_DOWN: py++; break;
-            case KEY_LEFT: px--; break;
-            case KEY_RIGHT: px++; break;
-            default: break;
-        }
-        if (ch == ENTER_KEY) {
-            break;
-        }
-        move(py, px);
-        refresh();
-    }
+    send(other_sock, "play", 5, 0);
+    play(other_sock);
 
     getch();
 }
@@ -284,10 +264,18 @@ void join_game()
     if (is_connected != -1) {
         printw("Connected!\n");
         printw("\nAwaiting host to start the game....");
+        refresh();
+        char buffer[5];
+        recv(sock, buffer, 5, 0);
+        if (strcmp(buffer, "play") == 0) {
+            play(sock);
+        }
     } else {
         printw("Error! Could not connect to host!\n");
         printw("\nPress ENTER to continue....");
         getch();
+        wrap_up();
+        exit(1);
     }
 }
 
@@ -316,4 +304,52 @@ void print_boards(char hits[12][512], char ships[12][512])
         printw("%c %s\n", (i >= 1 && i <= 10) ? 'A' + i - 1 : ' ', ships[i]);
     }
     refresh();
+}
+
+int placer(int y, int x, char board[12][512])
+{
+    if ((x >= 3 && x <= 7) && board[y][x] == ' ') {
+        return 5;
+    } else if ((x >= 9 && x <= 13) && board[y][x] == ' ') {
+        return 11;
+    } else if ((x >= 15 && x <= 19) && board[y][x] == ' ') {
+        return 17;
+    } else if ((x >= 21 && x <= 25) && board[y][x] == ' ') {
+        return 23;
+    } else if ((x >= 27 && x <= 31) && board[y][x] == ' ') {
+        return 29;
+    } else if ((x >= 33 && x <= 37) && board[y][x] == ' ') {
+        return 35;
+    } else if ((x >= 39 && x <= 43) && board[y][x] == ' ') {
+        return 41;
+    } else if ((x >= 45 && x <= 49) && board[y][x] == ' ') {
+        return 47;
+    } else if ((x >= 51 && x <= 55) && board[y][x] == ' ') {
+        return 53;
+    } else if ((x >= 57 && x <= 61) && board[y][x] == ' ') {
+        return 59;
+    }
+    return 0;
+}
+
+void print_place_boats()
+{
+    printw("\nPlace your ships!  (Hint: Press H for help)");
+    printw("\nA - Aircraft Carrier  :   5 spaces");
+    printw("\nB - Battleship        :   4 spaces");
+    printw("\nS - Submarine         :   3 spaces");
+    printw("\nC - Cruiser           :   3 spaces");
+    printw("\nD - Destroyer         :   2 spaces");
+}
+
+void play(int sock)
+{
+    char buffer[5];
+    char hits[12][512];
+    char ships[12][512];
+    make_board(hits);
+    make_board(ships);
+    print_boards(hits, ships);
+
+    getch();
 }
